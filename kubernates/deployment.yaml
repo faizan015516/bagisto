@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bagisto
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: bagisto
+  template:
+    metadata:
+      labels:
+        app: bagisto
+    spec:
+      containers:
+        - name: bagisto
+          image: faizann1212121/bagisto:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+
+          envFrom:
+            - configMapRef:
+                name: bagisto-config
+            - secretRef:
+                name: bagisto-secret
+
+          env:
+            - name: DB_AUTOSTART
+              value: "false"
